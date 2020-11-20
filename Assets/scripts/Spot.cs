@@ -55,7 +55,7 @@ public class Spot : MonoBehaviour
     private void OnMouseDown()
     {
         
-        if(CurrentSymbol == Symbol.None) //se o jogador estiver jogando sozinho
+        if((CurrentSymbol == Symbol.None) && GetComponentInParent<BoardController>().GameStart) //se o jogador estiver jogando sozinho
         {
             if(GetComponentInParent<BoardController>().Loner && GetComponentInParent<BoardController>().player == 0)
             {

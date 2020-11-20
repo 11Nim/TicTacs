@@ -4,11 +4,13 @@ using UnityEngine;
 
     
 
+
+
 public class BoardController : MonoBehaviour //ver se dá problema derivar o boardcontroller de spot p usar o symbol
 {
     public int BoardSize = 3;
     public Symbol[,] Tabuleiro;
-    
+    public bool GameStart = false;
 
     public bool Loner = true;
     public bool botStart = false;
@@ -19,13 +21,7 @@ public class BoardController : MonoBehaviour //ver se dá problema derivar o boa
     {
         player = 0;
         Tabuleiro = new Symbol[BoardSize, BoardSize];
-
-
-
-        if(Loner && botStart)
-        {
-            MiniMacsPlay();
-        }
+ 
         
     }
 
