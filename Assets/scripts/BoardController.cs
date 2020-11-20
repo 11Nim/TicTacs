@@ -14,6 +14,13 @@ public class BoardController : MonoBehaviour //ver se dá problema derivar o boa
 
     public bool Loner = true;
     public bool botStart = false;
+
+    public bool FumigaGanhou = false;
+    public bool BorboGanhou = false;
+    public bool Empate = false;
+    
+
+
    
     public int player; //player 0 = jogador 1, player 1 = entre estados, player 2 = jogador 
     
@@ -37,7 +44,13 @@ public class BoardController : MonoBehaviour //ver se dá problema derivar o boa
             Tabuleiro[novaJogada.Line, novaJogada.Column] = Symbol.Fumiga;//tem q ajeitar isso aqui, fazer mudar o negócio no spot
             if(HasWinner(Tabuleiro))
             {
-                Debug.Log("Fumiga won");
+                FumigaGanhou = true;
+                return;
+            }
+            if(NoMorePlays(Tabuleiro))
+            {
+                
+                Empate = true;
                 return;
             }
             player = 0;
@@ -48,9 +61,16 @@ public class BoardController : MonoBehaviour //ver se dá problema derivar o boa
             Tabuleiro[novaJogada.Line, novaJogada.Column] = Symbol.Besouro;
             if(HasWinner(Tabuleiro))
             {
-                Debug.Log("Besouro won");
+                BorboGanhou = true;
                 return;
             }
+
+            if(NoMorePlays(Tabuleiro))
+        {
+            
+            Empate = true;
+            return;
+        }
             player = 0;
         }
     }
@@ -69,7 +89,7 @@ public class BoardController : MonoBehaviour //ver se dá problema derivar o boa
             spot.CurrentSymbol = Symbol.Besouro;//esse codigo vai ligar o symbol e fazer ele andar
             if(HasWinner(Tabuleiro))
             {
-                Debug.Log("Besouro won");   
+                BorboGanhou = true;   
                 return;
             }
         }else
@@ -78,7 +98,7 @@ public class BoardController : MonoBehaviour //ver se dá problema derivar o boa
             spot.CurrentSymbol = Symbol.Fumiga;//esse codigo vai ligar o symbol e fazer ele andar
             if(HasWinner(Tabuleiro))
             {
-                Debug.Log("Fumiga won");   
+                FumigaGanhou = true;   
                 return;
             }
         }
@@ -87,7 +107,8 @@ public class BoardController : MonoBehaviour //ver se dá problema derivar o boa
         
         if(NoMorePlays(Tabuleiro))
         {
-            Debug.Log("it's a draw");
+            
+            Empate = true;
             return;
         }
 
@@ -105,13 +126,14 @@ public class BoardController : MonoBehaviour //ver se dá problema derivar o boa
         Debug.Log("clicked " + spot.Line + "," + spot.Column);   
         if(HasWinner(Tabuleiro))
         {
-            Debug.Log("Fumiga won");   
+            FumigaGanhou = true;   
             return;
         }
         
         if(NoMorePlays(Tabuleiro))
         {
-            Debug.Log("it's a draw");
+            
+            Empate = true;
             return;
         }
         player = 0; //permite que o outro jogador jogue  
@@ -127,12 +149,13 @@ public class BoardController : MonoBehaviour //ver se dá problema derivar o boa
         Debug.Log("clicked " + spot.Line + "," + spot.Column);
         if(HasWinner(Tabuleiro))
         {
-            Debug.Log("Besouro won");
+            BorboGanhou = true;
             return;
         }
         if(NoMorePlays(Tabuleiro))
         {
-            Debug.Log("it's a draw");
+            
+            Empate = true;
             return;
         }
         player = 2; //permite que o outro jogador jogue
@@ -148,7 +171,7 @@ public class BoardController : MonoBehaviour //ver se dá problema derivar o boa
 
 
 
-
+/*
     public bool HasWinner(Symbol[,] symbol) //verifica todas as possibilidades de vitória e retorna true se alguem ganhou
     {                                       //obs: nao funciona se mudar o tabuleiro
         if ((symbol[0,0] == symbol[0,1] && symbol[0,0] == symbol[0,2] && symbol[0,0] != Symbol.None) ||
@@ -163,6 +186,114 @@ public class BoardController : MonoBehaviour //ver se dá problema derivar o boa
         else
             return false;       
             
+    }*/
+
+    public bool HasWinner(Symbol[,] oplano)
+    {
+        int newBoardSize = BoardSize - 1;
+        
+        Symbol newSymbol = Symbol.None;
+        
+        for (int i = 0; i < BoardSize; i++)
+            {
+                for (int j = 0; j < BoardSize; j++)
+                {
+                    if(j == 0) 
+                    {
+                        if (oplano[i,j] != Symbol.None)
+                        {
+                            newSymbol = oplano[i,j];
+                            continue;
+                        }else
+                            {
+                               j = BoardSize;
+                                continue; 
+                            }
+                    }
+                    else if(oplano[i,j] != newSymbol)
+                    {
+                        j = BoardSize;
+                        continue;
+                    } else if (j == (BoardSize - 1))
+                            return true;                   
+
+                }
+            }
+
+        for (int j = 0; j < BoardSize; j++)
+            {
+                for (int i = 0; i < BoardSize; i++)
+                {
+                    if(i == 0) 
+                    {
+                        if (oplano[i,j] != Symbol.None)
+                        {
+                            newSymbol = oplano[i,j];
+                            continue;
+                        }else
+                            {
+                               i = BoardSize;
+                                continue; 
+                            }
+                    }
+                    else if(oplano[i,j] != newSymbol)
+                    {
+                        i = BoardSize;
+                        continue;
+                    } else if (i == (BoardSize - 1))
+                            return true;                   
+
+                }
+            }
+
+        for (int i = 0; i < BoardSize; i++)
+            {
+                if(i == 0) 
+                    {
+                        if (oplano[i,i] != Symbol.None)
+                        {
+                            newSymbol = oplano[i,i];
+                            continue;
+                        }else
+                        {
+                            i = BoardSize;
+                            continue; 
+                        }
+                    }
+                    else if(oplano[i,i] != newSymbol)
+                    {
+                        i = BoardSize;
+                        continue;
+                    } else if (i == (BoardSize - 1))
+                            return true; 
+            }
+        for (int i = 0; i < BoardSize; i++)
+            {
+                if(i == 0) 
+                    {
+                        if (oplano[i,(newBoardSize - i)] != Symbol.None)
+                        {
+                            newSymbol = oplano[i,(newBoardSize - i)];
+                            continue;
+                        }else
+                        {
+                            i = BoardSize;
+                            continue; 
+                        }
+                    }
+                    else if(oplano[i,(newBoardSize - i)] != newSymbol)
+                    {
+                        i = BoardSize;
+                        continue;
+                    } else if (i == (BoardSize - 1))
+                            return true; 
+            }              
+
+                
+            
+
+
+        return false;
     }
 
 
@@ -180,6 +311,36 @@ public class BoardController : MonoBehaviour //ver se dá problema derivar o boa
     }
 
     
+
+
+    public void FumigaWon()
+    {
+        GameStart = false;
+        player = 0;
+        //vai ativar o botao dizendo que a fumiga won e se quer jogar de novo
+        // vai ativar o botao não quer jogar de novo
+    }
+
+    public void BesouroWon()
+    {
+        GameStart = false;
+        player = 0;
+        //vai ativar o botao dizendo que a borboleta won e se quer jogar de novo
+        // vai ativar o botao não quer jogar de novo
+    }
+
+    public void ResetaTabuleiro()
+    {
+        for (int i = 0; i < BoardSize; i++)
+        {
+            for (int j = 0; j < BoardSize; j++)
+            {
+                Tabuleiro[i,j] = Symbol.None;
+            }
+        }
+    }
+
+
     //************************************************************minimax********************************************************
     
     public struct Play
