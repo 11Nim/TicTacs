@@ -11,6 +11,34 @@ public class PvBOT : MonoBehaviour
     public GameObject botaopvp;
     public GameObject botaoBOTS;
     public GameObject botaoPS;
+    public GameObject botaoFumigaWon;
+    public GameObject botaoBorboWon;
+    public GameObject botaoQuit;
+    public GameObject botaoDraw;
+
+    public void Update()
+    {
+        if(GetComponentInParent<BoardController>().Empate)
+        {
+            GetComponentInParent<BoardController>().Empate = false;
+            botaoDraw.gameObject.SetActive(botaoDraw);
+            botaoQuit.gameObject.SetActive(botaoQuit);
+        }
+
+        if(GetComponentInParent<BoardController>().FumigaGanhou)
+        {
+            GetComponentInParent<BoardController>().FumigaGanhou = false;
+            botaoFumigaWon.gameObject.SetActive(botaoFumigaWon);
+            botaoQuit.gameObject.SetActive(botaoQuit);
+        }
+        if(GetComponentInParent<BoardController>().BorboGanhou)
+        {
+            GetComponentInParent<BoardController>().BorboGanhou = false;
+            botaoBorboWon.gameObject.SetActive(botaoBorboWon);
+            botaoQuit.gameObject.SetActive(botaoQuit);
+        }
+
+    }
     
     public void TheBotStart()
     {
@@ -20,6 +48,7 @@ public class PvBOT : MonoBehaviour
         GetComponentInParent<BoardController>().botStart = true;
         GetComponentInParent<BoardController>().GameStart = true;
         GetComponentInParent<BoardController>().MiniMacsPlay();
+        GetComponentInParent<BoardController>().player = 0;
 
     }
 
@@ -30,6 +59,7 @@ public class PvBOT : MonoBehaviour
         botaoPS.gameObject.SetActive(!botaoPS);
         GetComponentInParent<BoardController>().botStart = false;
         GetComponentInParent<BoardController>().GameStart = true;
+        GetComponentInParent<BoardController>().player = 0;
 
     }
     
@@ -49,7 +79,43 @@ public class PvBOT : MonoBehaviour
         botaopvp.gameObject.SetActive(!botaopvp);
         GetComponentInParent<BoardController>().Loner = false;
         GetComponentInParent<BoardController>().GameStart = true;
+        GetComponentInParent<BoardController>().player = 0;
 
+    }
+
+    public void BorboWon()
+    {
+        botaoBorboWon.gameObject.SetActive(!botaoBorboWon);
+        botaoQuit.gameObject.SetActive(!botaoQuit);
+        botaopvbot.gameObject.SetActive(botaopvbot);
+        botaopvp.gameObject.SetActive(botaopvp);
+        GetComponentInParent<BoardController>().ResetaTabuleiro();
+    }
+
+    public void FumigaWon()
+    {
+        botaoFumigaWon.gameObject.SetActive(!botaoFumigaWon);
+        botaoQuit.gameObject.SetActive(!botaoQuit);
+        botaopvbot.gameObject.SetActive(botaopvbot);
+        botaopvp.gameObject.SetActive(botaopvp);
+        GetComponentInParent<BoardController>().ResetaTabuleiro();
+    }
+
+    public void Quit()
+    {
+        botaoBorboWon.gameObject.SetActive(!botaoBorboWon);
+        botaoFumigaWon.gameObject.SetActive(!botaoFumigaWon);
+        botaoDraw.gameObject.SetActive(!botaoDraw);
+        botaoQuit.gameObject.SetActive(!botaoQuit);
+    }
+
+    public void Draw()
+    {
+        botaoDraw.gameObject.SetActive(!botaoDraw);
+        botaoQuit.gameObject.SetActive(!botaoQuit);
+        botaopvbot.gameObject.SetActive(botaopvbot);
+        botaopvp.gameObject.SetActive(botaopvp);
+        GetComponentInParent<BoardController>().ResetaTabuleiro();
     }
 
 }

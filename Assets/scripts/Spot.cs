@@ -60,13 +60,7 @@ public class Spot : MonoBehaviour
             if(GetComponentInParent<BoardController>().Loner && GetComponentInParent<BoardController>().player == 0)
             {
                 if(GetComponentInParent<BoardController>().player == 0)
-                GetComponentInParent<BoardController>().SpotClickedPlayer(this);
-
-
-                //colocar aqui o código
-
-
-
+                    GetComponentInParent<BoardController>().SpotClickedPlayer(this);
 
             }else //se ele estiver jogando com outra pessoa
             if((GetComponentInParent<BoardController>().player == 0 || GetComponentInParent<BoardController>().player == 2) && !GetComponentInParent<BoardController>().Loner)
